@@ -13,6 +13,8 @@ export function request(config) {
 // request拦截器
 instance.interceptors.request.use(config => {
     //... 获取token，存储token 等操作
+		//为请求头添加token验证的Antuorization字段
+		config.headers.Authorization = window.sessionStorage.getItem('token')
     return config
   }, error => {
     console.log(error)
