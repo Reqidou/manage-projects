@@ -69,3 +69,21 @@ export function delUser(id) {
     method: 'delete',
   })
 }
+
+//获取所有角色列表
+export function getRoles() {
+  return request({
+    url: '/roles',
+    method: 'get'
+  })
+}
+//分配用户的新角色
+export function allotUsersRole(id, rid) {
+  return request({
+    url: '/users/' + id + '/role',
+    data: {
+      rid
+    },
+    method: 'put',
+  })
+}
