@@ -7,8 +7,14 @@ import './assets/css/global.css'
 import './plugins/element.js'
 // 引入图标库
 import './assets/fonts/iconfont.css'
+// 导入树形插件
+import TreeTable from 'vue-table-with-tree-grid'
 
 Vue.config.productionTip = false
+
+
+
+Vue.component('tree-table', TreeTable)
 
 new Vue({
   router,
