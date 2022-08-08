@@ -9,8 +9,8 @@ const Welcome = () => import('@/components/home/childComps/Welcome')
 const Users = () => import('@/components/home/childComps/user/Users')
 const Rights = () => import('@/components/power/rights/Rights')
 const Roles = () => import('@/components/power/roles/Roles')
-const Cate = () => import('@/components/goods/Cate')
-
+const Cate = () => import('@/components/goods/cate/Cate')
+const Params = () => import('@/components/goods/params/Params')
 
 Vue.use(VueRouter)
 
@@ -45,6 +45,10 @@ const routes = [
     {
       path: 'categories',
       component: Cate
+    },
+    {
+      path: 'params',
+      component: Params
     }
   ]
   }

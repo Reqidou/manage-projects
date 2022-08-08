@@ -107,7 +107,7 @@
 </template>
 
 <script>
-import Breadcrumb from '../common/Breadcrumb.vue'
+import Breadcrumb from '../../common/Breadcrumb.vue'
 import { getCategories, addCategories, editCategories, delCategories } from '@/network/goods'
 export default {
   components: { Breadcrumb },
