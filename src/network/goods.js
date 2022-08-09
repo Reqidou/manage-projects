@@ -1,4 +1,5 @@
 import { request } from "./request";
+/** 商品分类 */
 // 获取所有类型分类
 export function getCategories(queryInfo) {
   return request({
@@ -107,6 +108,45 @@ export function editPostParams(id, row) {
       attr_name: row.attr_name,
       attr_sel: row.attr_sel,
       attr_vals: row.attr_vals.join(','),
+    }
+  })
+}
+/** 商品列表 */
+// 获取商品列表
+export function getGoodsList(queryInfo) {
+  return request({
+    url: '/goods',
+    method: 'get',
+    params: {
+      query: queryInfo.query,
+      pagenum: queryInfo.pagenum,
+      pagesize: queryInfo.pagesize,
+    }
+  })
+}
+//根据id删除商品
+export function deleteGoodsById(id) {
+  return request({
+    url: '/goods/' + id,
+    method: 'delete',
+
+  })
+}
+//添加商品
+export function postGoods(forms) {
+  console.log(forms);
+  return request({
+    url: '/goods',
+    method: 'post',
+    data: {
+      goods_name: forms.goods_name,
+      goods_cat: forms.goods_cat,
+      goods_price: forms.goods_price,
+      goods_number: forms.goods_number,
+      goods_weight: forms.goods_weight,
+      goods_introduce: forms.goods_introduce,
+      pics: forms.pics,
+      attrs: forms.attrs,
     }
   })
 }
