@@ -30,7 +30,7 @@
         </el-table-column>
         <el-table-column label="操作" width="130px">
           <template v-slot="scope">
-            <el-button icon="el-icon-edit" type="primary" size="mini"></el-button>
+            <el-button @click="editGoods(scope.row.goods_id)" icon="el-icon-edit" type="primary" size="mini"></el-button>
             <el-button @click="deleteGoods(scope.row.goods_id)" icon="el-icon-delete" type="danger" size="mini"></el-button>
           </template>
           
@@ -48,13 +48,50 @@
         :total="total"
         background>
       </el-pagination>
+
+      <!-- 编辑对话框 -->
+      <el-dialog
+        title="修改信息"
+        :visible.sync="editDialogVisible"
+        width="50%">
+        <!-- form表单 -->
+        <el-form :model="formList" :rules="editFormRules" ref="editFormRef" label-width="100px">
+          <el-form-item label="商品名称" prop="goods_name">
+            <el-input v-model="formList.goods_name"></el-input>
+          </el-form-item>
+          <el-form-item label="商品价格" prop="goods_price">
+            <el-input v-model="formList.goods_price"></el-input>
+          </el-form-item>
+          <el-form-item label="商品重量" prop="goods_weight">
+            <el-input v-model="formList.goods_weight"></el-input>
+          </el-form-item>
+          <el-form-item label="商品数量" prop="goods_number">
+            <el-input v-model="formList.goods_number"></el-input>
+          </el-form-item>
+          <el-form-item label="商品描述" prop="goods_introduce">
+            <el-input v-model="formList.goods_introduce"></el-input>
+          </el-form-item>
+          <el-form-item label="商品分类" prop="goods_cat">
+            <el-cascader
+              v-model="formList.goods_cat"
+              :options="cateList"
+              :props="{ expandTrigger: 'hover', ...cateProps }"
+              disabled
+            ></el-cascader>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="editDialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="_editGoods">确 定</el-button>
+        </span>
+      </el-dialog>
     </el-card>
   </div>
 </template>
 
 <script>
 import Breadcrumb from '@/components/common/Breadcrumb.vue'
-import { getGoodsList, deleteGoodsById } from '@/network/goods'
+import { getGoodsList, deleteGoodsById, getGoodsById, editGoodsById, getCateList } from '@/network/goods'
 export default {
   components: { Breadcrumb },
   data() {
@@ -69,10 +106,75 @@ export default {
       goodsList: [],
       // 数据条数
       total: 0,
+      editDialogVisible: false, //添加按钮显示状态
+      formList: {//商品列表存储
+        goods_name: '',
+        goods_price: 0,
+        goods_number: 0,
+        goods_weight: 0,
+        goods_introduce: '',
+        pics: '',
+        attrs: [],
+        goods_cat: [],//商品所属的分类
+      }, 
+      //商品分类列表
+      cateList: [],
+      //级联选择器props
+      cateProps: {
+        label: 'cat_name',
+        value: 'cat_id',
+        children: 'children'
+      },
+      editFormRules: {
+        //添加表单规则验证
+        goods_name: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
+        goods_price: [{ required: true, message: '请输入商品价格', trigger: 'blur' }],
+        goods_weight: [{ required: true, message: '请输入商品重量', trigger: 'blur' }],
+        goods_number: [{ required: true, message: '请输入商品数量', trigger: 'blur' }],
+        goods_introduce: [{ required: true, message: '请输入商品描述', trigger: 'blur' }],
+      },
+      goods_id: 0,//当前选中商品id
     }
   },
   computed: {},
   methods: {
+    //获取商品分类
+    async _getCateList() {
+      const res = await getCateList()
+      if (res.meta.status !== 200) {
+        return this.$message.error('获取商品分类数据失败')
+      }
+      this.cateList = res.data
+    },
+    // 修改商品
+    _editGoods() {
+      
+      this.$refs.editFormRef.validate(async valid => {
+        if(!valid) return
+        const res = await editGoodsById(this.goods_id, this.formList)
+        if(res.meta.status !== 200) {
+          return this.$message.error(res.meta.msg)
+        }
+        this.$message.success('修改商品成功')
+
+        this._getGoodsList()
+        this.editDialogVisible = false
+      })
+      
+    },
+    //展示商品
+    async editGoods(id) {
+      
+      const res = await getGoodsById(id)
+      if(res.meta.status !== 200) {
+        return this.$message.error('获取参数列表失败')
+      }
+      this.formList = res.data
+      this.goods_id = id
+      this.editDialogVisible = true
+      this.formList.goods_cat = [this.formList.cat_one_id, this.formList.cat_two_id, this.formList.cat_three_id]
+      console.log(this.formList.goods_cat);
+    },
     //添加商品跳转新标签页
     goAddPage() {
       this.$router.push('goods/add')
@@ -117,6 +219,7 @@ export default {
   },
   created() {
     this._getGoodsList()
+    this._getCateList()
   },
 }
 </script>

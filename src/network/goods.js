@@ -134,7 +134,6 @@ export function deleteGoodsById(id) {
 }
 //添加商品
 export function postGoods(forms) {
-  console.log(forms);
   return request({
     url: '/goods',
     method: 'post',
@@ -147,6 +146,28 @@ export function postGoods(forms) {
       goods_introduce: forms.goods_introduce,
       pics: forms.pics,
       attrs: forms.attrs,
+    }
+  })
+}
+//根据id查询商品
+export function getGoodsById(id) {
+  return request({
+    url: '/goods/' + id,
+    method: 'get'
+  })
+}
+//根据id修改商品
+export function editGoodsById(id, form) {
+  return request({
+    url: '/goods/' + id,
+    method: 'put',
+    data: {
+      goods_name: form.goods_name,
+      goods_price: form.goods_price,
+      goods_number: form.goods_number,
+      goods_weight: form.goods_weight,
+      goods_introduce: form.goods_introduce,
+      goods_cat: form.goods_cat.join(','),
     }
   })
 }
