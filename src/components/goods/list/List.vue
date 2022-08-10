@@ -138,6 +138,7 @@ export default {
   },
   computed: {},
   methods: {
+    
     //获取商品分类
     async _getCateList() {
       const res = await getCateList()

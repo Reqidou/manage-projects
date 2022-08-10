@@ -1,7 +1,7 @@
 //导入ele组件
 import Vue from 'vue'
 //全局导入
-import ElementUI from 'element-ui'
+// import ElementUI, { Timeline } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 // 修改语言
 // import zhLocale from 'element-ui/lib/locale/lang/en' // 中文
@@ -47,7 +47,9 @@ import {
   Step,
   Checkbox,
   CheckboxGroup,
-  Upload
+  Upload,
+  Timeline,
+  TimelineItem
 
 } from 'element-ui'
 import { options } from 'less'
@@ -87,6 +89,8 @@ Vue.use(Step)
 Vue.use(Checkbox)
 Vue.use(CheckboxGroup)
 Vue.use(Upload)
+Vue.use(Timeline)
+Vue.use(TimelineItem)
 
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
