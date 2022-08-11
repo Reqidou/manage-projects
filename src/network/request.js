@@ -3,7 +3,7 @@ import axios from 'axios'
 export function request(config) {
   // 1.创建axios的实例
   const instance = axios.create({
-    baseURL: 'http://127.0.0.1:8888/api/private/v1/',
+    baseURL: 'http://manageapi.qidou.club:7002/api/private/v1/',
     timeout: 5000,
     
     // 跨域请求时是否传递cookies
