@@ -22,6 +22,7 @@ Vue.use(VueQuillEditor, /* { default global options } */)
 
 //vue内注册时间戳
 Vue.filter('dataFormat', function(originVal) {
+  originVal = originVal * 1000
   const dt = new Date(originVal)
 
   const y = dt.getFullYear()
